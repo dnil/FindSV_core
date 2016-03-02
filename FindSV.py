@@ -1,7 +1,26 @@
 import argparse
 import sys
 
+#read the config file, prefer command line option to config
+def readconfig(path,command_line):
+    config={}
+    return(config)
+
 def main(args):
+
+    config=readconfig(args.config,args);
+    caller_slurm_ID=[];
+    caller_output=[];
+    #run the callers
+    #for caller in callers:
+    #    ID=[];OUT=[];
+    #    if caller == "FT":
+    #        ID,OUT=run_FT()
+    #    elif caller =="CNVnator":
+    #        ID,OUT=run_CNVnator()
+    #combine module; combine all the caller modules into one VCF
+    
+    #annotation module; filter and annotate the samples
     return(None)
 
 
