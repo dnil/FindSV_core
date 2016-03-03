@@ -2,6 +2,7 @@ import argparse
 import sys
 import yaml
 import os
+import FindSV_modules
 
 #read the config file, prefer command line option to config
 def readconfig(path,command_line):
@@ -13,25 +14,26 @@ def readconfig(path,command_line):
         config_file=os.path.join(programDirectory,"config.txt")
     print config_file
     with open(config_file, 'r') as stream:
-        #print stream
-        print(yaml.load(stream))
+        config=yaml.load(stream)
     return(config)
 
 def main(args):
-
     config=readconfig(args.config,args);
     caller_slurm_ID=[];
     caller_output=[];
-    #run the callers
-    #for caller in callers:
-    #    ID=[];OUT=[];
-    #    if caller == "FT":
-    #        ID,OUT=run_FT()
-    #    elif caller =="CNVnator":
-    #        ID,OUT=run_CNVnator()
-    #combine module; combine all the caller modules into one VCF
     
+    scripts=FindSV_modules.main()
+    #run the callers
+    for caller in config["FindSV"]["calling"]:
+        ID=[];OUT=[];
+        print(caller)
+        print(scripts["FindSV"]["calling"][caller])
+    #combine module; combine all the caller modules into one VCF
+    print(scripts["FindSV"]["combine"]["combine"])
     #annotation module; filter and annotate the samples
+    print(scripts["FindSV"]["annotation"]["DB"])
+    print(scripts["FindSV"]["annotation"]["VEP"])
+    print(scripts["FindSV"]["annotation"]["GENMOD"])
     return(None)
 
 
