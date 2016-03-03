@@ -31,9 +31,11 @@ def main(args):
     #combine module; combine all the caller modules into one VCF
     print(scripts["FindSV"]["combine"]["combine"])
     #annotation module; filter and annotate the samples
+    print(scripts["FindSV"]["annotation"]["header"])
     print(scripts["FindSV"]["annotation"]["DB"])
     print(scripts["FindSV"]["annotation"]["VEP"])
     print(scripts["FindSV"]["annotation"]["GENMOD"])
+    print(scripts["FindSV"]["annotation"]["cleaning"])
     return(None)
 
 

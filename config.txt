@@ -1,9 +1,10 @@
 FindSV:
   annotation:
-    DB: {DB_path: '', overlap_parameter: '0.7'}
+    DB: {DB_path: '', DB_script_path: '', overlap_parameter: '0.7'}
     GENMOD: {GENMOD_rank_model_path: ''}
     VEP: {VEP.pl_path: '', port: '3337', vep.cache_dir: ''}
   calling:
     CNVnator: {CNVnator_path: cnvnator, ROOTSYS: '', bin_size: '1000', reference_dir: ''}
     FT: {FT_path: '', minimum_supporting_pairs: '6'}
-  general: {account: ''}
+  combine: {contig_sort_path: '', merge_vcf_path: ''}
+  general: {account: '', output: ''}
