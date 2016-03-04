@@ -57,14 +57,14 @@ rm {output}/{prefix}_FindSV.unsorted.vcf"""
 #SBATCH -t {time}
 
 """
-#the vep section
-    VEP=""
 #the DB section
     DB=""
+#the vep section
+    VEP="perl {vep_path} --cache --force_overwrite --poly b -i {output}/{prefix}_frq.vcf -o {output}/{prefix}_vep.vcf --buffer_size 5 --port {port} --vcf --whole_genome --per_gene --format vcf  {cache_dir} -q\n"
 #the genmod section
-    GENMOD=""
+    GENMOD="genmod score -c {genmod_score_path} {output}/{prefix}_vep.vcf} > {output}/{prefix}_vep.vcf}.tmp\nmv output}/{prefix}_vep.vcf}.tmp {output}/{prefix}_vep.vcf\n"
 #the cleaning sections
-    cleaning=""
+    cleaning="vcftools --recode --recode-INFO-all --remove-filtered-all --vcf {output}/{prefix}_vep.vcf --stdout > {output}/{prefix}_FindSV_clean.vcf \n"
     filter={"header":header,"VEP":VEP,"DB":DB,"GENMOD":GENMOD,"cleaning":cleaning}
     
     scripts={"FindSV":{"calling":calling,"annotation":filter,"combine":combine}}
