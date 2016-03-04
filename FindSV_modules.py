@@ -58,9 +58,9 @@ rm {output}/{prefix}_FindSV.unsorted.vcf"""
 
 """
 #the DB section
-    DB=""
+    DB="python {query_script} --variations {output}/{prefix}_FindSV.vcf} --db {db_folder_path} > {output}/{prefix}_frq.vcf\n"
 #the vep section
-    VEP="perl {vep_path} --cache --force_overwrite --poly b -i {output}/{prefix}_frq.vcf -o {output}/{prefix}_vep.vcf --buffer_size 5 --port {port} --vcf --whole_genome --per_gene --format vcf  {cache_dir} -q\n"
+    VEP="perl {vep_path} --cache --force_overwrite --poly b -i {output}/{prefix}_frq.vcf -o {output}/{prefix}_vep.vcf --buffer_size 5 --port {port} --vcf --per_gene --format vcf  {cache_dir} -q\n"
 #the genmod section
     GENMOD="genmod score -c {genmod_score_path} {output}/{prefix}_vep.vcf} > {output}/{prefix}_vep.vcf}.tmp\nmv output}/{prefix}_vep.vcf}.tmp {output}/{prefix}_vep.vcf\n"
 #the cleaning sections
