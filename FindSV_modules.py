@@ -17,7 +17,7 @@ def main():
 rm {output}.tab"""
     
 #the cnvnator script
-ROOTPATH ="""
+    ROOTPATH ="""
 export ROOTSYS={rootdir}
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ROOTSYS/lib
 """
