@@ -4,6 +4,7 @@ import yaml
 import os
 import FindSV_modules
 import subprocess
+import re
 
 #this function prints the scripts, submits the slurm job, and then returns the jobid
 def submitSlurmJob(path,message):
