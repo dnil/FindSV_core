@@ -1,7 +1,7 @@
 import yaml
 
 config=[]
-general={"account":"","output":"","TMPDIR":"","UPPMAX":,""}
+general={"account":"","output":"","TMPDIR":"","UPPMAX":""}
 
 calling={"FT":{"FT_path":"","minimum_supporting_pairs":"6"},"CNVnator":{"CNVnator_path":"cnvnator","CNVnator2vcf_path":"CNVnator2vcf.pl","ROOTSYS":"","bin_size":"1000","reference_dir":""}}
 
