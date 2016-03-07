@@ -18,8 +18,11 @@ rm {output}.tab"""
     
 #the cnvnator script
     ROOTPATH ="""
-export ROOTSYS={rootdir}
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ROOTSYS/lib
+START=$(pwd)
+cd {rootdir}/bin
+source thisroot.sh
+cd $START
+
 """
 
     CNVnator="""
