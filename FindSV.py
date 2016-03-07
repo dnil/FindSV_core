@@ -5,6 +5,7 @@ import os
 import FindSV_modules
 import subprocess
 import re
+import fnmatch
 
 #this function prints the scripts, submits the slurm job, and then returns the jobid
 def submitSlurmJob(path,message):
@@ -116,7 +117,8 @@ def main(args):
 
 
 parser = argparse.ArgumentParser("FindSV core module")
-parser.add_argument('--bam', type=str,help="run the pipeline")
+parser.add_argument('--bam', type=str,help="analyse the bam file using FindSV")
+parser.add_argument("--folder", type=str,help="analyse every bam file within a folder using FindSV")
 parser.add_argument('--output', type=str,default=None,help="the output is stored in this folder")
 parser.add_argument("--config",type=str, default=None,help="the location of the config file(default= the same folder as the FindSV-core script")
 parser.add_argument("--test",action="store_true",help="Check so that all the required files are accessible")
@@ -130,5 +132,11 @@ elif args.install:
 else:
     if args.bam:
         main(args)
+    elif args.folder:
+        for root, dirnames, filenames in os.walk(args.folder):
+            for filename in fnmatch.filter(filenames, '*.bam'):
+                bam_file=os.path.join(root, filename)
+                args.bam=bam_file
+                main(args)
     else:
         print("error: --bam is required")
