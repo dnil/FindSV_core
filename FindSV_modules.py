@@ -40,8 +40,6 @@ rm {output}.cnvnator.out
     
 #The combine script
     combine="""
-#SBATCH -d afterok:{slurm_IDs}
-
 python {merge_vcf_path} --vcf {input_vcf} > {output}_FindSV.unsorted.vcf
 python {contig_sort_path} --vcf {output}_FindSV.unsorted.vcf --bam {bam_path} > {output}_FindSV.vcf
 rm {output}_FindSV.unsorted.vcf"""
@@ -62,5 +60,5 @@ rm {output}_FindSV.unsorted.vcf"""
     cleaning="python {VCFTOOLS_path} --vcf {output}_vep.vcf > {output}_FindSV_clean.vcf \n"
     filter={"header":annotation_header,"VEP":VEP,"DB":DB,"GENMOD":GENMOD,"cleaning":cleaning}
     
-    scripts={"FindSV":{"calling":calling,"annotation":filter,"combine":combine,"header":header,"UPPMAX":"\nmodule load {modules}\n","ROOTSYS":ROOTPATH}}
+    scripts={"FindSV":{"calling":calling,"annotation":filter,"combine":combine,"header":header,"UPPMAX":"\nmodule load {modules}\n","afterok":"\n#SBATCH -d afterok:{slurm_IDs}\n","ROOTSYS":ROOTPATH}}
     return(scripts)
