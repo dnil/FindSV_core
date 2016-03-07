@@ -81,6 +81,13 @@ def main(args):
             process_files=os.path.join(output,"slurm/calling/",job_name)
             CNVNator=scripts["FindSV"]["header"].format(account=general_config["account"],time="30:00:00",name=job_name,filename=process_files)
             output_prefix=os.path.join(output,prefix)
+            #if the user want to use uppmax settings, load CNVNator module, otherwise load rootsys to path, if none is given, assume that rootsys is permanently added to path
+            if not general_config["UPPMAX"] == "":
+                CNVNator +=scripts["FindSV"]["UPPMAX"].format(modules="bioinfo-tools CNVnator")
+                caller_config["CNVnator_path"]="cnvnator"
+                caller_config["CNVnator2vcf_path"]="cnvnator2VCF.pl"
+            elif not caller_config["ROOTSYS"] =="":
+                CNVNator +=scripts["FindSV"]["ROOTSYS"].format( rootdir=caller_config["ROOTSYS"].strip("/") )
             CNVNator += scripts["FindSV"]["calling"][caller].format(output=output_prefix,CNVnator_path=caller_config["CNVnator_path"],bam_path=args.bam,bin_size=caller_config["bin_size"],reference_dir=caller_config["reference_dir"],CNVnator2vcf_path=caller_config["CNVnator2vcf_path"])
             input_vcf += "{}_CNVnator.vcf ".format(output_prefix)
             sbatch_ID.append(submitSlurmJob( os.path.join(output,"slurm/calling/CNVnator_{}.slurm".format(prefix)) ,CNVNator) )

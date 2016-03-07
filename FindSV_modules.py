@@ -31,8 +31,9 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ROOTSYS/lib
 {CNVnator2vcf_path} {output}.cnvnator.out  >  {output}_CNVnator.vcf
 rm {output}.root
 rm {output}.cnvnator.out
+
 """
-    calling={"FT":FT,"CNVnator":CNVnator,"ROOTSYS":ROOTPATH}
+    calling={"FT":FT,"CNVnator":CNVnator}
     
 #The combine script
     combine="""
@@ -58,5 +59,5 @@ rm {output}_FindSV.unsorted.vcf"""
     cleaning="python {VCFTOOLS_path} --vcf {output}_vep.vcf > {output}_FindSV_clean.vcf \n"
     filter={"header":annotation_header,"VEP":VEP,"DB":DB,"GENMOD":GENMOD,"cleaning":cleaning}
     
-    scripts={"FindSV":{"calling":calling,"annotation":filter,"combine":combine,"header":header,"UPPMAX":"module load {modules}\n"}}
+    scripts={"FindSV":{"calling":calling,"annotation":filter,"combine":combine,"header":header,"UPPMAX":"\nmodule load {modules}\n","ROOTSYS":ROOTPATH}}
     return(scripts)
