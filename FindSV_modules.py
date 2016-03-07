@@ -17,6 +17,11 @@ def main():
 rm {output}.tab"""
     
 #the cnvnator script
+ROOTPATH ="""
+export ROOTSYS={rootdir}
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ROOTSYS/lib
+"""
+
     CNVnator="""
 {CNVnator_path} -root {output}.root -tree {bam_path}
 {CNVnator_path} -root {output}.root -his {bin_size} -d {reference_dir}
@@ -27,7 +32,7 @@ rm {output}.tab"""
 rm {output}.root
 rm {output}.cnvnator.out
 """
-    calling={"FT":FT,"CNVnator":CNVnator}
+    calling={"FT":FT,"CNVnator":CNVnator,"ROOTSYS":ROOTPATH}
     
 #The combine script
     combine="""
@@ -53,5 +58,5 @@ rm {output}_FindSV.unsorted.vcf"""
     cleaning="python {VCFTOOLS_path} --vcf {output}_vep.vcf > {output}_FindSV_clean.vcf \n"
     filter={"header":annotation_header,"VEP":VEP,"DB":DB,"GENMOD":GENMOD,"cleaning":cleaning}
     
-    scripts={"FindSV":{"calling":calling,"annotation":filter,"combine":combine,"header":header}}
+    scripts={"FindSV":{"calling":calling,"annotation":filter,"combine":combine,"header":header,"UPPMAX":"module load {modules}\n"}}
     return(scripts)
