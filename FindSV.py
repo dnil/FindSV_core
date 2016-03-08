@@ -73,8 +73,8 @@ def main(args):
             #generate the body
             FT += scripts["FindSV"]["calling"][caller].format(output=output_prefix,FT_path=caller_config["FT_path"],bam_path=args.bam,minimum_suporting=caller_config["minimum_supporting_pairs"])
             sbatch_ID.append(submitSlurmJob( os.path.join(output,"slurm/calling/FT_{}.slurm".format(prefix)),FT) )
-            input_vcf += "{}_inter_chromosomal.vcf ".format(output_prefix)
-            input_vcf += "{}_intra_chromosomal.vcf ".format(output_prefix)
+            input_vcf += "{}_inter_chr_events.vcf ".format(output_prefix)
+            input_vcf += "{}_intra_chr_events.vcf ".format(output_prefix)
         #run cnvnator
         elif caller =="CNVnator":
             job_name="CNVnator_{}".format(prefix)
