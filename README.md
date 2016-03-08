@@ -49,21 +49,35 @@ account: the slurm account
 
 output: optional defult output folder
 
+
 calling:
+
   FindTranslocation:
+  
     minimum supporting pairs: the minimum number o pairs to call a variant.
     
+    
   CNVnator
+  
     bin size: the base pair sie of each bin used to search for CNVs
 
+
 annotation:
+
   internal frequency DB
+  
     the minimum overlap to count a variant as a hit in the DB
+    
   Genmod
+  
     rank model path
+    
       the path to the genmod rankmodel
+      
   VEP
+  
     cache_dir
+    
       the same as the vep --dir option
 
 
