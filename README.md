@@ -40,5 +40,17 @@ their paths need to be added to the config file
 Reference_dir
 The path to the reference directory is set using the reference_dir flag. There reference needs to be split per chromosome.
 
+Other settings
+
+general:
+TMPDIR: path to the directory used as scratch drive(not implemented yet)
+
+account: the slurm account
+
+output: optional defult output folder
+
+calling:
+
+annotation:
 
 
