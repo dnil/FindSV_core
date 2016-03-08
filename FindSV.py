@@ -99,9 +99,10 @@ def main(args):
     contig_sort=os.path.join(programDirectory,"internal_scripts","contigSort.py")
     combine=scripts["FindSV"]["header"].format(account=general_config["account"],time="3:00:00",name=job_name,filename=process_files)
     #if we are on Uppmax, the samtools module is loaded, otherise it is assumed to be correctly installed
+    combine += scripts["FindSV"]["afterok"].format(slurm_IDs=":".join(sbatch_ID))
     if not general_config["UPPMAX"] == "":
         combine +=scripts["FindSV"]["UPPMAX"].format(modules="bioinfo-tools samtools")
-    combine += scripts["FindSV"]["combine"]["combine"].format(output=output_prefix,merge_vcf_path=merge_VCF_path,input_vcf=input_vcf,contig_sort_path=contig_sort,bam_path=args.bam,slurm_IDs=":".join(sbatch_ID))
+    combine += scripts["FindSV"]["combine"]["combine"].format(output=output_prefix,merge_vcf_path=merge_VCF_path,input_vcf=input_vcf,contig_sort_path=contig_sort,bam_path=args.bam)
     combine_ID=submitSlurmJob( os.path.join(output,"slurm/combine/combine_{}.slurm".format(prefix)) , combine)
     
     #annotation module; filter and annotate the samples
