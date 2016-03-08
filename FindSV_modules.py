@@ -54,11 +54,12 @@ rm {output}_FindSV.unsorted.vcf"""
     DB="python {query_script} --variations {output}_FindSV.vcf --db {db_folder_path} > {output}_frq.vcf\n"
 #the vep section
     VEP="perl {vep_path} --cache --force_overwrite --poly b -i {output}_frq.vcf -o {output}_vep.vcf --buffer_size 5 --port {port} --vcf --per_gene --format vcf  {cache_dir} -q\n"
+    UPPMAX_VEP="variant_effect_predictor.pl --cache --force_overwrite --poly b -i {output}_frq.vcf -o {output}_vep.vcf --buffer_size 5 --port {port} --vcf --per_gene --format vcf  {cache_dir} -q\n"
 #the genmod section
     GENMOD="genmod score -c {genmod_score_path} {output}_vep.vcf > {output}_vep.vcf.tmp\nmv {output}_vep.vcf.tmp {output}_vep.vcf\n"
     
     cleaning="python {VCFTOOLS_path} --vcf {output}_vep.vcf > {output}_FindSV_clean.vcf \n"
-    filter={"header":annotation_header,"VEP":VEP,"DB":DB,"GENMOD":GENMOD,"cleaning":cleaning}
+    filter={"header":annotation_header,"VEP":VEP,"UPPMAX_VEP":UPPMAX_VEP,"DB":DB,"GENMOD":GENMOD,"cleaning":cleaning}
     
     scripts={"FindSV":{"calling":calling,"annotation":filter,"combine":combine,"header":header,"UPPMAX":"\nmodule load {modules}\n","afterok":"\n#SBATCH -d afterok:{slurm_IDs}\n","ROOTSYS":ROOTPATH}}
     return(scripts)

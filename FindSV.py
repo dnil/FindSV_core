@@ -113,11 +113,17 @@ def main(args):
     
     output_prefix=os.path.join(output,prefix)
     annotation += scripts["FindSV"]["annotation"]["header"].format(combine_script_id=combine_ID)
+    if not general_config["UPPMAX"] == "":
+        annotation +=scripts["FindSV"]["UPPMAX"].format(modules="bioinfo-tools vep")
     annotation += scripts["FindSV"]["annotation"]["DB"].format(query_script=annotation_config["DB"]["DB_script_path"],output=output_prefix,db_folder_path=annotation_config["DB"]["DB_path"])
     cache_dir=""
     if not annotation_config["VEP"]["cache_dir"] == "":
         cache_dir=" --dir {}".format(annotation_config["VEP"]["cache_dir"])
-    annotation += scripts["FindSV"]["annotation"]["VEP"].format(vep_path=annotation_config["VEP"]["VEP.pl_path"],output=output_prefix,port=annotation_config["VEP"]["port"],cache_dir=cache_dir)
+    if not general_config["UPPMAX"] == "":
+        annotation += scripts["FindSV"]["annotation"]["UPPMAX_VEP"].format(vep_path=annotation_config["VEP"]["VEP.pl_path"],output=output_prefix,port=annotation_config["VEP"]["port"],cache_dir=cache_dir)
+    else:
+        annotation += scripts["FindSV"]["annotation"]["VEP"].format(vep_path=annotation_config["VEP"]["VEP.pl_path"],output=output_prefix,port=annotation_config["VEP"]["port"],cache_dir=cache_dir)
+
     annotation += scripts["FindSV"]["annotation"]["GENMOD"].format(genmod_score_path=annotation_config["GENMOD"]["GENMOD_rank_model_path"],output=output_prefix)
     clean_VCF_path=os.path.join(programDirectory,"internal_scripts","cleanVCF.py")
     annotation += scripts["FindSV"]["annotation"]["cleaning"].format(output=output_prefix,VCFTOOLS_path=clean_VCF_path)
