@@ -31,7 +31,13 @@ Depending on how the root system was installed the path of the oot folder may ne
 UPPMAX system:
 by setting the uppmax flag in the config file to anthing except "", the uppmax settings and modules will be used. Then the following tools must be installed:
 FindTranslocations
+<<<<<<< HEAD
 genmod
+=======
+
+genmod
+vep
+>>>>>>> 4b3accd71a5ef37c2417c6b6fbb8bfe19472b2f1
 
 their paths need to be added to the config file
 
@@ -76,6 +82,10 @@ annotation:
   
     cache_dir
     
+<<<<<<< HEAD
       the same as the vep --dir option; this option is required on uppmax
+=======
+      the same as the vep --dir option
+>>>>>>> 4b3accd71a5ef37c2417c6b6fbb8bfe19472b2f1
 
 

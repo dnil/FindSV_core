@@ -93,6 +93,7 @@ def main(args):
             sbatch_ID.append(submitSlurmJob( os.path.join(output,"slurm/calling/CNVnator_{}.slurm".format(prefix)) ,CNVNator) )
             
     #combine module; combine all the caller modules into one VCF
+    output_prefix=os.path.join(output,prefix)
     job_name="combine_{}".format(prefix)
     process_files=os.path.join(output,"slurm/combine/",job_name)
     merge_VCF_path=os.path.join(programDirectory,"internal_scripts","mergeVCF.py")
@@ -102,7 +103,8 @@ def main(args):
     combine += scripts["FindSV"]["afterok"].format(slurm_IDs=":".join(sbatch_ID))
     if not general_config["UPPMAX"] == "":
         combine +=scripts["FindSV"]["UPPMAX"].format(modules="bioinfo-tools samtools")
-    combine += scripts["FindSV"]["combine"]["combine"].format(output=output_prefix,merge_vcf_path=merge_VCF_path,input_vcf=input_vcf,contig_sort_path=contig_sort,bam_path=args.bam)
+    outputVCF=output_prefix+"_FindSV.vcf"
+    combine += scripts["FindSV"]["combine"]["combine"].format(output=output_prefix,merge_vcf_path=merge_VCF_path,input_vcf=input_vcf,contig_sort_path=contig_sort,bam_path=args.bam,output_vcf=outputVCF)
     combine_ID=submitSlurmJob( os.path.join(output,"slurm/combine/combine_{}.slurm".format(prefix)) , combine)
     
     #annotation module; filter and annotate the samples
@@ -110,23 +112,39 @@ def main(args):
     job_name="annotation_{}".format(prefix)
     process_files=os.path.join(output,"slurm/annotation/",job_name)
     annotation = scripts["FindSV"]["header"].format(account=general_config["account"],time="10:00:00",name=job_name,filename=process_files)
-    
-    output_prefix=os.path.join(output,prefix)
     annotation += scripts["FindSV"]["annotation"]["header"].format(combine_script_id=combine_ID)
+    
     if not general_config["UPPMAX"] == "":
         annotation +=scripts["FindSV"]["UPPMAX"].format(modules="bioinfo-tools vep")
-    annotation += scripts["FindSV"]["annotation"]["DB"].format(query_script=annotation_config["DB"]["DB_script_path"],output=output_prefix,db_folder_path=annotation_config["DB"]["DB_path"])
+    #add frequency database annotation
+    if not annotation_config["DB"]["DB_script_path"] == "":
+        inputVCF=outputVCF
+        outputVCF=output_prefix+"_frequency.vcf"
+        annotation += scripts["FindSV"]["annotation"]["DB"].format(query_script=annotation_config["DB"]["DB_script_path"],output=output_prefix,db_folder_path=annotation_config["DB"]["DB_path"],input_vcf=inputVCF,output_vcf=outputVCF)
     cache_dir=""
+    
+    #add vep annotation
     if not annotation_config["VEP"]["cache_dir"] == "":
         cache_dir=" --dir {}".format(annotation_config["VEP"]["cache_dir"])
     if not general_config["UPPMAX"] == "":
-        annotation += scripts["FindSV"]["annotation"]["UPPMAX_VEP"].format(vep_path=annotation_config["VEP"]["VEP.pl_path"],output=output_prefix,port=annotation_config["VEP"]["port"],cache_dir=cache_dir)
-    else:
-        annotation += scripts["FindSV"]["annotation"]["VEP"].format(vep_path=annotation_config["VEP"]["VEP.pl_path"],output=output_prefix,port=annotation_config["VEP"]["port"],cache_dir=cache_dir)
+        inputVCF=outputVCF
+        outputVCF=output_prefix+"_vep.vcf"
+        annotation += scripts["FindSV"]["annotation"]["UPPMAX_VEP"].format(vep_path=annotation_config["VEP"]["VEP.pl_path"],output=output_prefix,port=annotation_config["VEP"]["port"],cache_dir=cache_dir,input_vcf=inputVCF,output_vcf=outputVCF)
+    elif not annotation_config["VEP"]["VEP.pl_path"] == "":
+        inputVCF=outputVCF
+        outputVCF=output_prefix+"_vep.vcf"
+        annotation += scripts["FindSV"]["annotation"]["VEP"].format(vep_path=annotation_config["VEP"]["VEP.pl_path"],output=output_prefix,port=annotation_config["VEP"]["port"],cache_dir=cache_dir,input_vcf=inputVCF,output_vcf=outputVCF)
 
-    annotation += scripts["FindSV"]["annotation"]["GENMOD"].format(genmod_score_path=annotation_config["GENMOD"]["GENMOD_rank_model_path"],output=output_prefix)
+    #add genmod annotation
+    if not annotation_config["GENMOD"]["GENMOD_rank_model_path"] == "":
+        inputVCF=outputVCF
+        outputVCF=output_prefix+"_genmod.vcf"
+        annotation += scripts["FindSV"]["annotation"]["GENMOD"].format(genmod_score_path=annotation_config["GENMOD"]["GENMOD_rank_model_path"],output=output_prefix,input_vcf=inputVCF,output_vcf=outputVCF)
+    #create a final cleaned vcf
+    inputVCF=outputVCF
+    outputVCF=output_prefix+"_cleaned.vcf"
     clean_VCF_path=os.path.join(programDirectory,"internal_scripts","cleanVCF.py")
-    annotation += scripts["FindSV"]["annotation"]["cleaning"].format(output=output_prefix,VCFTOOLS_path=clean_VCF_path)
+    annotation += scripts["FindSV"]["annotation"]["cleaning"].format(output=output_prefix,VCFTOOLS_path=clean_VCF_path,input_vcf=inputVCF,output_vcf=outputVCF)
     submitSlurmJob( os.path.join(output,"slurm/annotation/annotation_{}.slurm".format(prefix)) , annotation)
 
 
