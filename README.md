@@ -12,7 +12,18 @@ python FindSV.py --folder input_folder --output output_folder
 or skip the --output flag to put the output in the directory given py the config file.
 
 Installation
-non-uppmax system:
+Conda install
+prerequisites
+    Conda
+
+    FindTranslocations
+
+    CNVnator
+    
+add the path to FindTranslocations and CNVnator to the config file, also set the conda flag in the config file to anthing except "" for each tool where you want to use the conda environment.
+thereafter, cd to the CONDA folder and run the create_conda_env.sh script. This script will create the conda environment for genmod, samtools as well as vep. 
+    
+non-uppmax system, no conda:
 prerequisites
 
     FindTranslocations
@@ -26,7 +37,7 @@ prerequisites
     vep
 
 these softwares needs to be installed and their path must be added to the config file
-Depending on how the root system was installed the path of the oot folder may need to be added as well
+Depending on how the root system was installed the path of the root folder may need to be added as well
 
 UPPMAX system:
 by setting the uppmax flag in the config file to anthing except "", the uppmax settings and modules will be used. Then the following tools must be installed:
@@ -34,7 +45,7 @@ by setting the uppmax flag in the config file to anthing except "", the uppmax s
     FindTranslocations
     genmod
 
-their paths need to be added to the config file
+their paths need to be added to the config file, genmod may be installed and used through the conda environment by following the steps described in the conda install section
 
 Reference_dir
 The path to the reference directory is set using the reference_dir flag. There reference needs to be split per chromosome.

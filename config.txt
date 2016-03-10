@@ -7,5 +7,5 @@ FindSV:
     CNVnator: {CNVnator2vcf_path: CNVnator2vcf.pl, CNVnator_path: cnvnator, ROOTSYS: '',
       bin_size: '1000', reference_dir: ''}
     FT: {FT_path: '', minimum_supporting_pairs: '6'}
-  conda: {genmod: '', samtools: '', vep: ''}
+  conda: {genmod: 'Y', samtools: 'Y', vep: 'Y'}
   general: {TMPDIR: '', UPPMAX: '', account: '', output: ''}

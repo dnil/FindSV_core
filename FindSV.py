@@ -103,6 +103,9 @@ def main(args):
     combine += scripts["FindSV"]["afterok"].format(slurm_IDs=":".join(sbatch_ID))
     if not general_config["UPPMAX"] == "":
         combine +=scripts["FindSV"]["UPPMAX"].format(modules="bioinfo-tools samtools")
+    #if we are not on uppmax and the samtools conda module is installed
+    elif not config["FindSV"]["conda"]["samtools"] == "":
+        combine +=scripts["FindSV"]["conda"].format(environment="samtools_FINDSV")
     outputVCF=output_prefix+"_FindSV.vcf"
     combine += scripts["FindSV"]["combine"]["combine"].format(output=output_prefix,merge_vcf_path=merge_VCF_path,input_vcf=input_vcf,contig_sort_path=contig_sort,bam_path=args.bam,output_vcf=outputVCF)
     combine_ID=submitSlurmJob( os.path.join(output,"slurm/combine/combine_{}.slurm".format(prefix)) , combine)
@@ -114,8 +117,13 @@ def main(args):
     annotation = scripts["FindSV"]["header"].format(account=general_config["account"],time="10:00:00",name=job_name,filename=process_files)
     annotation += scripts["FindSV"]["annotation"]["header"].format(combine_script_id=combine_ID)
     
+    #if uppmax modules are chosen, the vep module is loaded
     if not general_config["UPPMAX"] == "":
         annotation +=scripts["FindSV"]["UPPMAX"].format(modules="bioinfo-tools vep")
+    #otherwise if the vep conda environment is installed, we will use it
+    elif not config["FindSV"]["conda"]["vep"] == "":
+        annotation +=scripts["FindSV"]["conda"].format(environment="VEP_FINDSV")
+    
     #add frequency database annotation
     if not annotation_config["DB"]["DB_script_path"] == "":
         inputVCF=outputVCF
@@ -126,10 +134,13 @@ def main(args):
     #add vep annotation
     if not annotation_config["VEP"]["cache_dir"] == "":
         cache_dir=" --dir {}".format(annotation_config["VEP"]["cache_dir"])
-    if not general_config["UPPMAX"] == "":
+    
+    #DO not use local system vep if uppmax or conda is chosen
+    if not general_config["UPPMAX"] == "" or not config["FindSV"]["conda"]["vep"] == "":
         inputVCF=outputVCF
         outputVCF=output_prefix+"_vep.vcf"
         annotation += scripts["FindSV"]["annotation"]["UPPMAX_VEP"].format(vep_path=annotation_config["VEP"]["VEP.pl_path"],output=output_prefix,port=annotation_config["VEP"]["port"],cache_dir=cache_dir,input_vcf=inputVCF,output_vcf=outputVCF)
+    #if we do not use uppmax or conda and a path to the vep script is added in the config, then use that vep script(otherwise skip vep annotation)
     elif not annotation_config["VEP"]["VEP.pl_path"] == "":
         inputVCF=outputVCF
         outputVCF=output_prefix+"_vep.vcf"
@@ -137,6 +148,9 @@ def main(args):
 
     #add genmod annotation
     if not annotation_config["GENMOD"]["GENMOD_rank_model_path"] == "":
+        #use the genmod conda module if the user wishes to do so
+        if not config["FindSV"]["conda"]["samtools"] == "":
+            annotation +=scripts["FindSV"]["conda"].format(environment="GENMOD_FINDSV")
         inputVCF=outputVCF
         outputVCF=output_prefix+"_genmod.vcf"
         annotation += scripts["FindSV"]["annotation"]["GENMOD"].format(genmod_score_path=annotation_config["GENMOD"]["GENMOD_rank_model_path"],output=output_prefix,input_vcf=inputVCF,output_vcf=outputVCF)
