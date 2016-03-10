@@ -33,8 +33,6 @@ by setting the uppmax flag in the config file to anthing except "", the uppmax s
   
     FindTranslocations
     genmod
-    genmod
-    vep
 
 their paths need to be added to the config file
 
