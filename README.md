@@ -15,15 +15,15 @@ Installation
 non-uppmax system:
 prerequisites
 
-FindTranslocations
+    FindTranslocations
 
-CNVnator
+    CNVnator
 
-samtools
+    samtools
 
-genmod
+    genmod
 
-vep
+    vep
 
 these softwares needs to be installed and their path must be added to the config file
 Depending on how the root system was installed the path of the oot folder may need to be added as well
@@ -31,10 +31,10 @@ Depending on how the root system was installed the path of the oot folder may ne
 UPPMAX system:
 by setting the uppmax flag in the config file to anthing except "", the uppmax settings and modules will be used. Then the following tools must be installed:
   
-  FindTranslocations
-  genmod
-  genmod
-  vep
+    FindTranslocations
+    genmod
+    genmod
+    vep
 
 their paths need to be added to the config file
 
