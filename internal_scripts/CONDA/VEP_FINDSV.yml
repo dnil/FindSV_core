@@ -1,0 +1,35 @@
+name: VEP_FINDSV
+dependencies:
+- libgcc=4.8.5=1
+- mysql-connector-c=6.1.6=1
+- mysqlclient=1.3.7=py35_1
+- openssl=1.0.2g=0
+- perl-archive-extract=0.76=2
+- perl-archive-zip=1.55=2
+- perl-bioperl=1.6.924=3
+- perl-cgi=4.22=2
+- perl-compress-raw-zlib=2.069=2
+- perl-dbd-mysql=4.033=2
+- perl-dbi=1.634=2
+- perl-encode-locale=1.05=2
+- perl-file-fetch=0.48=2
+- perl-file-sharedir=1.102=2
+- perl-file-sharedir-install=0.10=2
+- perl-ipc-system-simple=1.25=2
+- perl-lwp-protocol-https=6.06=2
+- perl-lwp-simple=6.15=2
+- perl-statistics-descriptive=3.0609=2
+- perl-threaded=5.22.0=9
+- perl-time-hires=1.9728=2
+- perl-yaml=1.15=0
+- pip=8.1.0=py35_0
+- python=3.5.1=0
+- readline=6.2=2
+- setuptools=20.2.2=py35_0
+- sqlite=3.9.2=0
+- tk=8.5.18=0
+- variant-effect-predictor=83=3
+- wheel=0.29.0=py35_0
+- xz=5.0.5=1
+- zlib=1.2.8=0
+
