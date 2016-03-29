@@ -18,19 +18,20 @@ Conda install
 prerequisites
     Conda
 
-use the command  
-        python FindSV.py --install
+        use the command:  
+                python FindSV.py --install
 
-choose the install mode that suits your application the best. For exmple
-        python FindSV.py --install UPPMAX
+        choose the install mode that suits your application the best. For exmple:
+                python FindSV.py --install UPPMAX
 
-to run FindSV-core on the uppmax system
+to run FindSV-core on the uppmax system.
 
 Settings
 =========
 
         Reference_dir
-            The path to the reference directory is set using the reference_dir flag. There reference needs to be split per chromosome.
+            The path to the reference directory is set using the reference_dir flag.
+            The reference needs to be split per chromosome.
 
 Other settings
 =============
