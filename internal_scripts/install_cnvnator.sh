@@ -1,21 +1,24 @@
 cd $1
-#install root and ad it to path
+#install root and add it to path if needed
 
-if [ `uname -o` == "GNU/Linux" ] ; 
-then if [ `uname -p` == "x86_64" ] ; 
-    then 
-	gcc --version |grep 4.4 > /dev/null; 
-	if [ $? -eq 0 ] ; 
-	then
-	    rootver=root_v5.34.34.Linux-slc6-x86_64-gcc4.4	   
-	else
-	    rootver=root_v5.34.34.Linux-ubuntu14-x86_64-gcc4.8
-	fi 
+if [ -z $ROOTSYS ]
+then
+    if [ `uname -o` == "GNU/Linux" ] ; 
+    then if [ `uname -p` == "x86_64" ] ; 
+	then 
+	    gcc --version |grep 4.4 > /dev/null;
+	    if [ $? -eq 0 ] ; 
+	    then
+		rootver=root_v5.34.34.Linux-slc6-x86_64-gcc4.4
+	    else
+		rootver=root_v5.34.34.Linux-ubuntu14-x86_64-gcc4.8
+	    fi 
+	fi
     fi
-fi
 
-wget https://root.cern.ch/download/${rootver}.tar.gz
-tar -xvf ${rootver}.tar.gz
+    wget https://root.cern.ch/download/${rootver}.tar.gz
+    tar -xvf ${rootver}.tar.gz
+fi
 
 #cd root/bin/
 #source thisroot.sh
